@@ -1,0 +1,35 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>edu.aeon</groupId>
+	<artifactId>rpi-inference</artifactId>
+	<version>0.9.0</version>
+	<name>RPI.Inference</name>
+
+	<properties>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>it.unibo.alice.tuprolog</groupId>
+			<artifactId>tuprolog</artifactId>
+			<version>3.2.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>jpl</groupId>
+			<artifactId>jpl</artifactId>
+			<version>3.1.4-alpha</version>
+		</dependency>
+
+		<!-- mvn install:install-file -Dfile=<path-to-file> -DgroupId=com.declarativa.interprolog -DartifactId=interprolog -Dversion=2.5.x -Dpackaging=jar -DgeneratePom=true -->
+		<dependency>
+			<groupId>com.declarativa.interprolog</groupId>
+			<artifactId>interprolog</artifactId>
+			<version>2.5.x</version>
+		</dependency>
+	</dependencies>
+</project>
