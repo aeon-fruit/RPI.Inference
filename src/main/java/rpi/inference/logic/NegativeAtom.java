@@ -44,4 +44,9 @@ public class NegativeAtom extends Literal {
         return new Atom(this.symbol, this.terms);
     }
 
+    @Override
+    public String toString() {
+        return super.toString();
+    }
+
 }

@@ -144,17 +144,14 @@ public abstract class Literal implements Expression {
 
     @Override
     public String toString() {
-        if ((this.symbol != null) && (!this.terms.isEmpty())) {
+        if (this.symbol != null) {
             String prefix = isPositive() ? POSITIVE : NEGATIVE;
             return prefix + this.string();
         }
-        return super.toString();
+        return "_";
     }
 
     private String string() {
-        if (this.symbol == null) {
-            return "";
-        }
         if (this.terms.isEmpty()) {
             return symbol;
         }
