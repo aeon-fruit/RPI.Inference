@@ -85,24 +85,24 @@ public class RuleConditional {
     }
 
     /**
-     * Check if both the antecedent and the consequent in this rule are non-null.
+     * Check if both the antecedent and the consequent in this rule are non-null and non-empty.
      *
-     * @return true if the antecedent and the consequent in this rule are non-null, false otherwise.
+     * @return true if the antecedent and the consequent in this rule are non-null and non-empty, false otherwise.
      */
     public boolean isValid() {
-        return this.antecedent != null && consequent != null;
+        return antecedent != null && !antecedent.isEmpty() && consequent != null && !consequent.isEmpty();
     }
 
     @Override
     public String toString() {
         String str = "";
-        if (antecedent == null) {
+        if ((antecedent == null) || antecedent.isEmpty()) {
             str += "INVALID";
         } else {
             str += antecedent;
         }
         str += " => ";
-        if (consequent == null) {
+        if ((consequent == null) || consequent.isEmpty()) {
             str += "INVALID";
         } else {
             str += consequent;

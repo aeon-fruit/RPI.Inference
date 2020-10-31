@@ -167,6 +167,44 @@ public interface Randomizer {
         return new DisjunctiveGeneralForm(randomListConjunctions(nonNUll));
     }
 
+    static ConjunctiveExpression randomConjunctiveExpression() {
+        return randomConjunctiveExpression(false, 0);
+    }
+
+    static ConjunctiveExpression randomConjunctiveExpression(boolean nonNUll, int height) {
+        switch (RandomUtil.random.nextInt(50) % (4 + height * 3)) {
+            case 0:
+                return randomConjunctiveNormalForm(nonNUll);
+            case 1:
+                return new ConjunctiveGeneralForm(randomListExpressions(nonNUll, height + 1));
+            default:
+                return new Conjunction(randomListLiterals(nonNUll));
+        }
+    }
+
+    static Expression randomExpression() {
+        return randomExpression(false, 0);
+    }
+
+    static Expression randomExpression(boolean nonNUll, int height) {
+        switch (RandomUtil.random.nextInt(50) % (8 + height * 3)) {
+            case 0:
+                return new Conjunction(randomListLiterals(nonNUll));
+            case 1:
+                return new Disjunction(randomListLiterals(nonNUll));
+            case 2:
+                return randomConjunctiveNormalForm(nonNUll);
+            case 3:
+                return randomDisjunctiveNormalForm(nonNUll);
+            case 4:
+                return new ConjunctiveGeneralForm(randomListExpressions(nonNUll, height + 1));
+            case 5:
+                return new DisjunctiveGeneralForm(randomListExpressions(nonNUll, height + 1));
+            default:
+                return randomLiteral(nonNUll);
+        }
+    }
+
     static Expression[] randomArrayExpressions() {
         List<Conjunction> list = randomListConjunctions();
         return list == null ? null : list.toArray(new Conjunction[0]);
@@ -183,37 +221,7 @@ public interface Randomizer {
         int length = RandomUtil.random.nextInt(3) + 1;
         List<Expression> list = new ArrayList<>(length);
         for (int i = 0; i < length; ++i) {
-            Expression expression;
-            switch (RandomUtil.random.nextInt(50) % (8 + height * 3)) {
-                case 0: {
-                    expression = new Conjunction(randomListLiterals(nonNUll));
-                    break;
-                }
-                case 1: {
-                    expression = new Disjunction(randomListLiterals(nonNUll));
-                    break;
-                }
-                case 2: {
-                    expression = randomConjunctiveNormalForm(nonNUll);
-                    break;
-                }
-                case 3: {
-                    expression = randomDisjunctiveNormalForm(nonNUll);
-                    break;
-                }
-                case 4: {
-                    expression = new ConjunctiveGeneralForm(randomListExpressions(nonNUll, height + 1));
-                    break;
-                }
-                case 5: {
-                    expression = new DisjunctiveGeneralForm(randomListExpressions(nonNUll, height + 1));
-                    break;
-                }
-                default: {
-                    expression = randomLiteral(nonNUll);
-                }
-            }
-            list.add(expression);
+            list.add(randomExpression(nonNUll, height));
         }
         return list;
     }
