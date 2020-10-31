@@ -1,8 +1,7 @@
 package rpi.inference.logic;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Literal is an expression of a single positive or negative atomic expression with an arity >= 0.
@@ -88,10 +87,10 @@ public abstract class Literal implements Expression {
      * @param terms List of terms that could be null or empty.
      */
     public void setTerms(List<String> terms) {
-        if (terms != null) {
-            this.terms = terms;
+        if (terms == null) {
+            this.terms = Collections.emptyList();
         } else {
-            this.terms = new ArrayList<>();
+            this.terms = terms.stream().filter(Objects::nonNull).collect(Collectors.toList());
         }
     }
 
@@ -103,8 +102,13 @@ public abstract class Literal implements Expression {
     public void setTerms(String[] terms) {
         this.terms = new ArrayList<>();
         if (terms != null) {
-            Collections.addAll(this.terms, terms);
+            this.terms = Arrays.stream(terms).filter(Objects::nonNull).collect(Collectors.toList());
         }
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return ((symbol == null) || (symbol.isEmpty())) && terms.isEmpty();
     }
 
     @Override

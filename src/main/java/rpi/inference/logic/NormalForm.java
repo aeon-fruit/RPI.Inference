@@ -2,6 +2,8 @@ package rpi.inference.logic;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * NormalForm is an expression in a "super-clausal" form of a disjunction of conjunctive clauses or the opposite.
@@ -45,8 +47,13 @@ public abstract class NormalForm implements Expression {
         if (clauses == null) {
             this.clauses = Collections.emptyList();
         } else {
-            this.clauses = clauses;
+            this.clauses = clauses.stream().filter(Objects::nonNull).collect(Collectors.toList());
         }
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return clauses.isEmpty();
     }
 
     @Override

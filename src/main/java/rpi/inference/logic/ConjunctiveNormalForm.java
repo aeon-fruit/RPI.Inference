@@ -43,6 +43,19 @@ public class ConjunctiveNormalForm extends NormalForm implements ConjunctiveExpr
         }
     }
 
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<Disjunction> getClauses() {
+        return (List<Disjunction>) super.getClauses();
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public void setClauses(List<? extends Clause> clauses) {
+        List<Disjunction> disjunctions = (List<Disjunction>) clauses;
+        super.setClauses(disjunctions);
+    }
+
     /**
      * Transform this CNF to a DNF.
      *
@@ -59,30 +72,36 @@ public class ConjunctiveNormalForm extends NormalForm implements ConjunctiveExpr
      */
     public DisjunctiveNormalForm toDNFLame() {
         List<? extends Clause> clauses = this.getClauses();
-        if (clauses.size() == 1) {
-            // transform the single disjunctive clause to a disjunction of one-literal conjunctive clauses
-            return new DisjunctiveNormalForm(
-                    clauses.get(0).getLiterals().stream()
-                            .map(Conjunction::new)
-                            .collect(Collectors.toList()));
-        }
 
         Iterator<? extends Clause> iterator = clauses.iterator();
+        if (!iterator.hasNext()) {
+            // empty expression
+            return new DisjunctiveNormalForm();
+        }
+
         Disjunction firstDisjunction = (Disjunction) iterator.next();
         while (firstDisjunction.getLiterals().isEmpty() && iterator.hasNext()) {
             // skip empty disjunctions
             firstDisjunction = (Disjunction) iterator.next();
         }
-        if (!iterator.hasNext()) {
+        if (firstDisjunction.getLiterals().isEmpty()) {
             // empty expression
             return new DisjunctiveNormalForm();
         }
+        if (!iterator.hasNext()) {
+            // single conjunctive clause
+            return new DisjunctiveNormalForm(
+                    firstDisjunction.getLiterals().stream()
+                            .map(Conjunction::new)
+                            .collect(Collectors.toList()));
+        }
+
         Disjunction secondDisjunction = (Disjunction) iterator.next();
         while (secondDisjunction.getLiterals().isEmpty() && iterator.hasNext()) {
             // skip empty disjunctions
             secondDisjunction = (Disjunction) iterator.next();
         }
-        if (!iterator.hasNext()) {
+        if (secondDisjunction.getLiterals().isEmpty()) {
             // single conjunctive clause
             return new DisjunctiveNormalForm(
                     firstDisjunction.getLiterals().stream()

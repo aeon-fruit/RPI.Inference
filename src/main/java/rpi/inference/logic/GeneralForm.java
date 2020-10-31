@@ -1,8 +1,10 @@
 package rpi.inference.logic;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * GeneralForm is a general expression in the form of a disjunction or a conjunction of expressions.
@@ -38,8 +40,7 @@ public abstract class GeneralForm implements Expression {
         if (expressions == null || expressions.length == 0) {
             setExpressions(Collections.emptyList());
         } else {
-            List<Expression> tmpExpressions = new ArrayList<>();
-            Collections.addAll(tmpExpressions, expressions);
+            List<Expression> tmpExpressions = Arrays.stream(expressions).filter(Objects::nonNull).collect(Collectors.toList());
             setExpressions(tmpExpressions);
         }
     }
@@ -62,8 +63,13 @@ public abstract class GeneralForm implements Expression {
         if (expressions == null) {
             this.expressions = Collections.emptyList();
         } else {
-            this.expressions = expressions;
+            this.expressions = expressions.stream().filter(Objects::nonNull).collect(Collectors.toList());
         }
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return expressions.isEmpty();
     }
 
     @Override

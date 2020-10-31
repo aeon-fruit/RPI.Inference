@@ -6,6 +6,13 @@ package rpi.inference.logic;
 public interface Expression {
 
     /**
+     * Check if this expression is empty.
+     *
+     * @return true if this expression is empty, false otherwise.
+     */
+    boolean isEmpty();
+
+    /**
      * Check if this expression is positive.
      *
      * @return true if this expression is positive, false otherwise.

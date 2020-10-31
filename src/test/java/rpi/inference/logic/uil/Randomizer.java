@@ -1,8 +1,6 @@
 package rpi.inference.logic.uil;
 
-import rpi.inference.logic.Atom;
-import rpi.inference.logic.Literal;
-import rpi.inference.logic.NegativeAtom;
+import rpi.inference.logic.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,8 +16,16 @@ public interface Randomizer {
         private final static Random random = new Random();
     }
 
+    static int randomCount() {
+        return RandomUtil.random.nextInt(30) + 1;
+    }
+
     static String randomSymbol() {
-        if (RandomUtil.random.nextInt() % 5 == 0) {
+        return randomSymbol(false);
+    }
+
+    static String randomSymbol(boolean nonNull) {
+        if (!nonNull && RandomUtil.random.nextInt() % 5 == 0) {
             return null;
         }
         return randomLowerCaseLetter();
@@ -37,7 +43,11 @@ public interface Randomizer {
     }
 
     static List<String> randomListTerms() {
-        if (RandomUtil.random.nextInt() % 5 == 0) {
+        return randomListTerms(false);
+    }
+
+    static List<String> randomListTerms(boolean nonNull) {
+        if (!nonNull && RandomUtil.random.nextInt() % 5 == 0) {
             return null;
         }
         int length = RandomUtil.random.nextInt(30) + 1;
@@ -45,19 +55,31 @@ public interface Randomizer {
     }
 
     static Atom randomAtom() {
-        String symbol = randomSymbol();
-        List<String> terms = randomListTerms();
+        return randomAtom(false);
+    }
+
+    static Atom randomAtom(boolean nonNull) {
+        String symbol = randomSymbol(nonNull);
+        List<String> terms = randomListTerms(nonNull);
         return new Atom(symbol, terms);
     }
 
     static NegativeAtom randomNegativeAtom() {
-        String symbol = randomSymbol();
-        List<String> terms = randomListTerms();
+        return randomNegativeAtom(false);
+    }
+
+    static NegativeAtom randomNegativeAtom(boolean nonNull) {
+        String symbol = randomSymbol(nonNull);
+        List<String> terms = randomListTerms(nonNull);
         return new NegativeAtom(symbol, terms);
     }
 
     static Literal randomLiteral() {
-        return RandomUtil.random.nextBoolean() ? randomAtom() : randomNegativeAtom();
+        return randomLiteral(false);
+    }
+
+    static Literal randomLiteral(boolean nonNull) {
+        return RandomUtil.random.nextBoolean() ? randomAtom(nonNull) : randomNegativeAtom(nonNull);
     }
 
     static Literal[] randomArrayLiterals() {
@@ -66,13 +88,59 @@ public interface Randomizer {
     }
 
     static List<Literal> randomListLiterals() {
-        if (RandomUtil.random.nextInt() % 5 == 0) {
+        return randomListLiterals(false);
+    }
+
+    static List<Literal> randomListLiterals(boolean nonNull) {
+        if (!nonNull && RandomUtil.random.nextInt() % 5 == 0) {
             return null;
         }
         int length = RandomUtil.random.nextInt(30) + 1;
         List<Literal> list = new ArrayList<>(length);
         for (int i = 0; i < length; ++i) {
-            list.add(randomLiteral());
+            list.add(randomLiteral(nonNull));
+        }
+        return list;
+    }
+
+    static Disjunction[] randomArrayDisjunctions() {
+        List<Disjunction> list = randomListDisjunctions();
+        return list == null ? null : list.toArray(new Disjunction[0]);
+    }
+
+    static List<Disjunction> randomListDisjunctions() {
+        return randomListDisjunctions(false);
+    }
+
+    static List<Disjunction> randomListDisjunctions(boolean nonNull) {
+        if (!nonNull && RandomUtil.random.nextInt() % 5 == 0) {
+            return null;
+        }
+        int length = RandomUtil.random.nextInt(30) + 1;
+        List<Disjunction> list = new ArrayList<>(length);
+        for (int i = 0; i < length; ++i) {
+            list.add(new Disjunction(randomListLiterals(nonNull)));
+        }
+        return list;
+    }
+
+    static Conjunction[] randomArrayConjunctions() {
+        List<Conjunction> list = randomListConjunctions();
+        return list == null ? null : list.toArray(new Conjunction[0]);
+    }
+
+    static List<Conjunction> randomListConjunctions() {
+        return randomListConjunctions(false);
+    }
+
+    static List<Conjunction> randomListConjunctions(boolean nonNUll) {
+        if (!nonNUll && RandomUtil.random.nextInt() % 5 == 0) {
+            return null;
+        }
+        int length = RandomUtil.random.nextInt(30) + 1;
+        List<Conjunction> list = new ArrayList<>(length);
+        for (int i = 0; i < length; ++i) {
+            list.add(new Conjunction(randomListLiterals(nonNUll)));
         }
         return list;
     }

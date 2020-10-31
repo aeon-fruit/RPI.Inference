@@ -78,4 +78,26 @@ public interface Asserter {
         assertFalse(clause.isGeneralForm());
     }
 
+    static void assertConjunctiveNormalForm(ConjunctiveNormalForm cnf) {
+        assertNormalForm(cnf);
+        assertFalse(cnf.isDisjunction());
+        assertTrue(cnf.isConjunction());
+    }
+
+    static void assertDisjunctiveNormalForm(DisjunctiveNormalForm dnf) {
+        assertNormalForm(dnf);
+        assertTrue(dnf.isDisjunction());
+        assertFalse(dnf.isConjunction());
+    }
+
+    static void assertNormalForm(NormalForm normalForm) {
+        assertNotNull(normalForm.getClauses());
+        assertTrue(normalForm.isPositive());
+        assertFalse(normalForm.isNegative());
+        assertFalse(normalForm.isLiteral());
+        assertFalse(normalForm.isClause());
+        assertTrue(normalForm.isNormalForm());
+        assertFalse(normalForm.isGeneralForm());
+    }
+
 }

@@ -1,8 +1,10 @@
 package rpi.inference.logic;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Clause is an expression in the clausal form that is either a conjunction or a disjunction of literals.
@@ -56,7 +58,7 @@ public abstract class Clause implements Expression {
         if (literals == null) {
             this.literals = Collections.emptyList();
         } else {
-            this.literals = literals;
+            this.literals = literals.stream().filter(Objects::nonNull).collect(Collectors.toList());
         }
     }
 
@@ -69,9 +71,13 @@ public abstract class Clause implements Expression {
         if (literals == null || literals.length == 0) {
             this.literals = Collections.emptyList();
         } else {
-            this.literals = new ArrayList<>();
-            Collections.addAll(this.literals, literals);
+            this.literals = Arrays.stream(literals).filter(Objects::nonNull).collect(Collectors.toList());
         }
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return literals.isEmpty();
     }
 
     @Override
