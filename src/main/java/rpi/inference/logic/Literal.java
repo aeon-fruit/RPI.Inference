@@ -90,7 +90,10 @@ public abstract class Literal implements Expression {
         if (terms == null) {
             this.terms = Collections.emptyList();
         } else {
-            this.terms = terms.stream().filter(Objects::nonNull).collect(Collectors.toList());
+            this.terms = terms.stream()
+                    .filter(Objects::nonNull)
+                    .filter(e -> !e.isEmpty())
+                    .collect(Collectors.toList());
         }
     }
 
@@ -100,9 +103,13 @@ public abstract class Literal implements Expression {
      * @param terms Array of terms that could be null or empty.
      */
     public void setTerms(String[] terms) {
-        this.terms = new ArrayList<>();
-        if (terms != null) {
-            this.terms = Arrays.stream(terms).filter(Objects::nonNull).collect(Collectors.toList());
+        if (terms == null) {
+            this.terms = Collections.emptyList();
+        } else {
+            this.terms = Arrays.stream(terms)
+                    .filter(Objects::nonNull)
+                    .filter(e -> !e.isEmpty())
+                    .collect(Collectors.toList());
         }
     }
 

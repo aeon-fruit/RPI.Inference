@@ -9,18 +9,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public interface Asserter {
 
-    static void assertLiteral(Literal literal) {
-        assertNotNull(literal.getTerms());
-        String symbol = literal.getSymbol();
-        assertEquals(((symbol == null) || symbol.isEmpty()) && literal.getTerms().isEmpty(), literal.isEmpty());
-        assertTrue(literal.isLiteral());
-        assertFalse(literal.isClause());
-        assertFalse(literal.isNormalForm());
-        assertFalse(literal.isGeneralForm());
-        assertTrue(literal.isDisjunction());
-        assertTrue(literal.isConjunction());
-    }
-
     static void assertAtom(Atom atom) {
         assertLiteral(atom);
         assertTrue(atom.isPositive());
@@ -31,6 +19,18 @@ public interface Asserter {
         assertLiteral(negativeAtom);
         assertFalse(negativeAtom.isPositive());
         assertTrue(negativeAtom.isNegative());
+    }
+
+    static void assertLiteral(Literal literal) {
+        assertNotNull(literal.getTerms());
+        String symbol = literal.getSymbol();
+        assertEquals(((symbol == null) || symbol.isEmpty()) && literal.getTerms().isEmpty(), literal.isEmpty());
+        assertTrue(literal.isLiteral());
+        assertFalse(literal.isClause());
+        assertFalse(literal.isNormalForm());
+        assertFalse(literal.isGeneralForm());
+        assertTrue(literal.isDisjunction());
+        assertTrue(literal.isConjunction());
     }
 
     static void assertLiteralString(String expectedSymbol, List<String> expectedTerms, String actual, String prefix) {
@@ -102,6 +102,29 @@ public interface Asserter {
         assertFalse(normalForm.isClause());
         assertTrue(normalForm.isNormalForm());
         assertFalse(normalForm.isGeneralForm());
+    }
+
+    static void assertConjunctiveGeneralForm(ConjunctiveGeneralForm cgf) {
+        assertGeneralForm(cgf);
+        assertFalse(cgf.isDisjunction());
+        assertTrue(cgf.isConjunction());
+    }
+
+    static void assertDisjunctiveGeneralForm(DisjunctiveGeneralForm dgf) {
+        assertGeneralForm(dgf);
+        assertTrue(dgf.isDisjunction());
+        assertFalse(dgf.isConjunction());
+    }
+
+    static void assertGeneralForm(GeneralForm generalForm) {
+        assertNotNull(generalForm.getExpressions());
+        assertEquals(generalForm.getExpressions().isEmpty(), generalForm.isEmpty());
+        assertTrue(generalForm.isPositive());
+        assertFalse(generalForm.isNegative());
+        assertFalse(generalForm.isLiteral());
+        assertFalse(generalForm.isClause());
+        assertFalse(generalForm.isNormalForm());
+        assertTrue(generalForm.isGeneralForm());
     }
 
 }

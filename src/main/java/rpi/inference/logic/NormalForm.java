@@ -47,7 +47,10 @@ public abstract class NormalForm implements Expression {
         if (clauses == null) {
             this.clauses = Collections.emptyList();
         } else {
-            this.clauses = clauses.stream().filter(Objects::nonNull).collect(Collectors.toList());
+            this.clauses = clauses.stream()
+                    .filter(Objects::nonNull)
+                    .filter(e -> !e.isEmpty())
+                    .collect(Collectors.toList());
         }
     }
 

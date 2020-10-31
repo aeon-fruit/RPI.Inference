@@ -40,8 +40,10 @@ public abstract class GeneralForm implements Expression {
         if (expressions == null || expressions.length == 0) {
             setExpressions(Collections.emptyList());
         } else {
-            List<Expression> tmpExpressions = Arrays.stream(expressions).filter(Objects::nonNull).collect(Collectors.toList());
-            setExpressions(tmpExpressions);
+            setExpressions(Arrays.stream(expressions)
+                    .filter(Objects::nonNull)
+                    .filter(e -> !e.isEmpty())
+                    .collect(Collectors.toList()));
         }
     }
 
@@ -63,7 +65,10 @@ public abstract class GeneralForm implements Expression {
         if (expressions == null) {
             this.expressions = Collections.emptyList();
         } else {
-            this.expressions = expressions.stream().filter(Objects::nonNull).collect(Collectors.toList());
+            this.expressions = expressions.stream()
+                    .filter(Objects::nonNull)
+                    .filter(e -> !e.isEmpty())
+                    .collect(Collectors.toList());
         }
     }
 

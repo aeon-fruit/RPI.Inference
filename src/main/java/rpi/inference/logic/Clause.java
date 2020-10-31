@@ -58,7 +58,10 @@ public abstract class Clause implements Expression {
         if (literals == null) {
             this.literals = Collections.emptyList();
         } else {
-            this.literals = literals.stream().filter(Objects::nonNull).collect(Collectors.toList());
+            this.literals = literals.stream()
+                    .filter(Objects::nonNull)
+                    .filter(e -> !e.isEmpty())
+                    .collect(Collectors.toList());
         }
     }
 
@@ -71,7 +74,10 @@ public abstract class Clause implements Expression {
         if (literals == null || literals.length == 0) {
             this.literals = Collections.emptyList();
         } else {
-            this.literals = Arrays.stream(literals).filter(Objects::nonNull).collect(Collectors.toList());
+            this.literals = Arrays.stream(literals)
+                    .filter(Objects::nonNull)
+                    .filter(e -> !e.isEmpty())
+                    .collect(Collectors.toList());
         }
     }
 

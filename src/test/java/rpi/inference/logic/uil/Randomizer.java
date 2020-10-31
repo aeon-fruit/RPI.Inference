@@ -145,4 +145,77 @@ public interface Randomizer {
         return list;
     }
 
+    static ConjunctiveNormalForm randomConjunctiveNormalForm() {
+        return randomConjunctiveNormalForm(false);
+    }
+
+    static ConjunctiveNormalForm randomConjunctiveNormalForm(boolean nonNUll) {
+        if (!nonNUll && RandomUtil.random.nextInt() % 5 == 0) {
+            return null;
+        }
+        return new ConjunctiveNormalForm(randomListDisjunctions(nonNUll));
+    }
+
+    static DisjunctiveGeneralForm randomDisjunctiveNormalForm() {
+        return randomDisjunctiveNormalForm(false);
+    }
+
+    static DisjunctiveGeneralForm randomDisjunctiveNormalForm(boolean nonNUll) {
+        if (!nonNUll && RandomUtil.random.nextInt() % 5 == 0) {
+            return null;
+        }
+        return new DisjunctiveGeneralForm(randomListConjunctions(nonNUll));
+    }
+
+    static Expression[] randomArrayExpressions() {
+        List<Conjunction> list = randomListConjunctions();
+        return list == null ? null : list.toArray(new Conjunction[0]);
+    }
+
+    static List<Expression> randomListExpressions() {
+        return randomListExpressions(false, 0);
+    }
+
+    static List<Expression> randomListExpressions(boolean nonNUll, int height) {
+        if (!nonNUll && RandomUtil.random.nextInt() % 5 == 0) {
+            return null;
+        }
+        int length = RandomUtil.random.nextInt(3) + 1;
+        List<Expression> list = new ArrayList<>(length);
+        for (int i = 0; i < length; ++i) {
+            Expression expression;
+            switch (RandomUtil.random.nextInt(50) % (8 + height * 3)) {
+                case 0: {
+                    expression = new Conjunction(randomListLiterals(nonNUll));
+                    break;
+                }
+                case 1: {
+                    expression = new Disjunction(randomListLiterals(nonNUll));
+                    break;
+                }
+                case 2: {
+                    expression = randomConjunctiveNormalForm(nonNUll);
+                    break;
+                }
+                case 3: {
+                    expression = randomDisjunctiveNormalForm(nonNUll);
+                    break;
+                }
+                case 4: {
+                    expression = new ConjunctiveGeneralForm(randomListExpressions(nonNUll, height + 1));
+                    break;
+                }
+                case 5: {
+                    expression = new DisjunctiveGeneralForm(randomListExpressions(nonNUll, height + 1));
+                    break;
+                }
+                default: {
+                    expression = randomLiteral(nonNUll);
+                }
+            }
+            list.add(expression);
+        }
+        return list;
+    }
+
 }
