@@ -108,7 +108,7 @@ public abstract class Literal implements Expression {
 
     @Override
     public boolean isEmpty() {
-        return ((symbol == null) || (symbol.isEmpty())) && terms.isEmpty();
+        return ((symbol == null) || symbol.isEmpty()) && terms.isEmpty();
     }
 
     @Override

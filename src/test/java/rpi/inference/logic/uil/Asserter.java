@@ -11,6 +11,8 @@ public interface Asserter {
 
     static void assertLiteral(Literal literal) {
         assertNotNull(literal.getTerms());
+        String symbol = literal.getSymbol();
+        assertEquals(((symbol == null) || symbol.isEmpty()) && literal.getTerms().isEmpty(), literal.isEmpty());
         assertTrue(literal.isLiteral());
         assertFalse(literal.isClause());
         assertFalse(literal.isNormalForm());
@@ -70,6 +72,7 @@ public interface Asserter {
 
     static void assertClause(Clause clause) {
         assertNotNull(clause.getLiterals());
+        assertEquals(clause.getLiterals().isEmpty(), clause.isEmpty());
         assertTrue(clause.isPositive());
         assertFalse(clause.isNegative());
         assertFalse(clause.isLiteral());
@@ -92,6 +95,7 @@ public interface Asserter {
 
     static void assertNormalForm(NormalForm normalForm) {
         assertNotNull(normalForm.getClauses());
+        assertEquals(normalForm.getClauses().isEmpty(), normalForm.isEmpty());
         assertTrue(normalForm.isPositive());
         assertFalse(normalForm.isNegative());
         assertFalse(normalForm.isLiteral());
